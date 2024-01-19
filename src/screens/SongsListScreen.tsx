@@ -6,6 +6,7 @@ import {
   ListRenderItemInfo,
   Button,
   Pressable,
+  StyleSheet,
 } from 'react-native';
 import SongListHeader from '../components/songlist/SongListHeader';
 import SongLink from '../components/songlist/SongLink';
@@ -23,8 +24,8 @@ export default () => {
   // @ts-ignore
   const data = useRoute().params.data as songlistdata;
   const [loading, setLoading] = useState(true);
-
   const [songs, setSongs] = useState<songdata[]>();
+  const [nowSongInfo, setNowSongInfo] = useState<null | songdata>(null);
   useEffect(() => {
     console.log('已更新SongsListScreen');
     console.log(data._id);
@@ -64,33 +65,55 @@ export default () => {
         <FlatList
           data={songs}
           initialNumToRender={15}
-          renderItem={renderItem}
+          renderItem={item => (
+            <SongLink data={item.item} index={item.index} fn={() => {}} />
+          )}
           // keyExtractor={(_, index) => String(index)}
           ListEmptyComponent={NoData}
         />
       )}
-      <View
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          width: '100%',
-          backgroundColor: 'white',
-        }}>
-        <Pressable onPress={() => {}} className="h-6">
-          <Text>关闭</Text>
-        </Pressable>
-        <Pressable>
-          <Text>收藏到歌单</Text>
-        </Pressable>
-      </View>
     </View>
   );
 };
 
-const renderItem = (item: ListRenderItemInfo<songdata>) => (
-  <SongLink data={item.item} index={item.index} fn={() => {}} />
-);
-
 function NoData() {
   return <Text>没有数据</Text>;
 }
+
+function Temp() {
+  const [showMenu, setShowMenu] = useState(false);
+
+  return (
+    <View
+      style={{
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        backgroundColor: 'white',
+        borderColor: 'black',
+        borderTopWidth: StyleSheet.hairlineWidth,
+        height: 'auto',
+        display: showMenu ? 'flex' : 'none',
+      }}>
+      <Pressable
+        onPress={() => {
+          setShowMenu(false);
+        }}
+        style={styles.menuitem}
+        android_ripple={{color: 'gray'}}>
+        <Text>关闭</Text>
+      </Pressable>
+      <Pressable style={styles.menuitem} android_ripple={{color: 'gray'}}>
+        <Text>收藏到歌单</Text>
+      </Pressable>
+      {/* <Text>{nowSongInfo?.artist.}</Text> */}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  menuitem: {
+    height: 40,
+    justifyContent: 'center',
+  },
+});

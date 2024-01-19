@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { PropsWithChildren, createContext, useContext, useState } from "react";
 
 export default class StateCtx<T> {

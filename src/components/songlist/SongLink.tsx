@@ -7,8 +7,9 @@ const SongLink = (props: {
   data: songdata;
   index: number;
   fn?: (number: number) => any;
+  menufn?: () => any;
 }) => {
-  const [showMenu, setShowMenu] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   return (
     <Pressable
@@ -30,12 +31,30 @@ const SongLink = (props: {
             props.data.artist![0]
           } - ${props.data.album}`}</Text>
         </View>
-        <Pressable
+        {/* <Pressable
           android_ripple={{color: 'gray'}}
           style={[styles.more_btn, ds.center]}
-          onPress={() => {}}>
+          onPress={props.menufn}>
           <Text style={styles.ico}>&#xe5d4;</Text>
-        </Pressable>
+        </Pressable> */}
+        <Menu
+          visible={visible}
+          onDismiss={() => {
+            setVisible(false);
+          }}
+          anchor={
+            <Pressable
+              android_ripple={{color: 'gray'}}
+              style={[styles.more_btn, ds.center]}
+              onPress={() => setVisible(true)}>
+              <Text style={styles.ico}>&#xe5d4;</Text>
+            </Pressable>
+          }>
+          <Menu.Item onPress={() => {}} title="添加到歌单" />
+          <Menu.Item onPress={() => {}} title="从歌单移除" />
+          {/* <Divider /> */}
+          {/* <Menu.Item onPress={() => {}} title="Item 3" /> */}
+        </Menu>
       </View>
     </Pressable>
   );
