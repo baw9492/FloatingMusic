@@ -1,44 +1,51 @@
-import { useNavigation, useNavigationState } from "@react-navigation/native";
-import React from "react";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
-import { useDState } from "../state/dstate";
-import dv, { noImgUrl } from "../styles/dv";
+import {useNavigation, useNavigationState} from '@react-navigation/native';
+import React from 'react';
+import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import {useDState} from '../state/dstate';
+import dv, {noImgUrl} from '../styles/dv';
+import TrackPlayer, {State} from 'react-native-track-player';
 
 export default function PlayingBar() {
-  console.log("已更新PlayingBar");
+  console.log('已更新PlayingBar');
   const dstate = useDState();
-  const curRoute = useNavigationState((state) => {
+  const curRoute = useNavigationState(state => {
     if (state) {
       return state.routes[state.index].name;
     }
   });
 
   const navigation = useNavigation();
-  const isShow: boolean = Boolean(dstate) && curRoute !== "Playing";
+  const isShow: boolean = Boolean(dstate) && curRoute !== 'Playing';
 
   return (
     <Pressable
-      android_ripple={{ color: "gray" }}
+      android_ripple={{color: 'gray'}}
       // @ts-ignore
-      onPress={() => navigation.navigate("Playing")}
-      style={[styles.main, { display: isShow ? "flex" : "none" }]}
-    >
+      onPress={() => navigation.navigate('Playing')}
+      style={[styles.main, {display: isShow ? 'flex' : 'none'}]}>
       <Image
-        source={{ uri: dstate?.artwork ? String(dstate?.artwork) : noImgUrl }}
+        source={{uri: dstate?.artwork ? String(dstate?.artwork) : noImgUrl}}
         style={styles.img}
       />
       <View style={styles.text}>
         <Text>{dstate?.title}</Text>
         <Text>歌词</Text>
       </View>
-      <Pressable onPress={() => {}}>
+      <Pressable
+        onPress={async () => {
+          const state = await TrackPlayer.getPlaybackState();
+          if (state.state === State.Playing) {
+            TrackPlayer.pause();
+          } else {
+            TrackPlayer.play();
+          }
+        }}>
         <Text>播放/暂停</Text>
       </Pressable>
       <Pressable
         onPress={() => {
           console.log(curRoute);
-        }}
-      >
+        }}>
         <Text>播放列表</Text>
       </Pressable>
     </Pressable>
@@ -47,14 +54,14 @@ export default function PlayingBar() {
 
 const styles = StyleSheet.create({
   main: {
-    position: "absolute",
-    backgroundColor: "gray",
+    position: 'absolute',
+    backgroundColor: 'gray',
     height: 60,
-    width: "100%",
+    width: '100%',
     left: 0,
     bottom: 0,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   img: {
     height: 50,

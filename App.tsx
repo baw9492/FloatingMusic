@@ -10,6 +10,7 @@ import PlayingBar from './src/components/PlayingBar';
 
 import {DState} from './src/state/dstate';
 import SearchScreen from './src/screens/SearchScreen';
+import {LocalSheetCtx} from './src/lib/states/localsheet';
 // import LocalScreen from './src/screens/LocalScreen';
 
 const Stack = createNativeStackNavigator();
@@ -17,20 +18,22 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <DState>
-      <PaperProvider>
-        <>
-          <NavigationContainer>
-            <Stack.Navigator screenOptions={{headerShown: false}}>
-              <Stack.Screen name="Home" component={HomeScreen} />
-              <Stack.Screen name="Playing" component={PlayingScreen} />
-              <Stack.Screen name="SongList" component={SongsListScreen} />
-              <Stack.Screen name="search" component={SearchScreen} />
-              {/* <Stack.Screen name="local" component={LocalScreen} /> */}
-            </Stack.Navigator>
-            <PlayingBar />
-          </NavigationContainer>
-        </>
-      </PaperProvider>
+      <LocalSheetCtx>
+        <PaperProvider>
+          <>
+            <NavigationContainer>
+              <Stack.Navigator screenOptions={{headerShown: false}}>
+                <Stack.Screen name="Home" component={HomeScreen} />
+                <Stack.Screen name="Playing" component={PlayingScreen} />
+                <Stack.Screen name="SongList" component={SongsListScreen} />
+                <Stack.Screen name="search" component={SearchScreen} />
+                {/* <Stack.Screen name="local" component={LocalScreen} /> */}
+              </Stack.Navigator>
+              <PlayingBar />
+            </NavigationContainer>
+          </>
+        </PaperProvider>
+      </LocalSheetCtx>
     </DState>
   );
 }

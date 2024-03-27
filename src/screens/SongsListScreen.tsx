@@ -57,7 +57,6 @@ export default () => {
 
   return (
     <View style={ds.swell}>
-      <Button title="bofang" onPress={() => setNewTrackAndPlay()} />
       <SongListHeader data={data} />
       {loading ? (
         <Text>加载中...</Text>

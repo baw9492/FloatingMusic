@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
-import dv from "../../styles/dv";
-import { useNavigation } from "@react-navigation/native";
+import React, {useState, useEffect} from 'react';
+import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
+import dv from '../../styles/dv';
+import {useNavigation} from '@react-navigation/native';
 import {
-  setPageContext,
   useQueryContext,
   useSearchHistoryCtx,
   useSetPageContext,
   useSetQueryContext,
-} from "./somestate";
+} from './somestate';
 export default () => {
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
   const navigation = useNavigation();
   const query = useQueryContext();
   const setQuery = useSetQueryContext();
@@ -25,13 +24,13 @@ export default () => {
   return (
     <View style={styles.header}>
       <Pressable onPress={() => navigation.goBack()}>
-        <Text>返回</Text>
+        <Text className='px-2'>返回</Text>
       </Pressable>
       <View style={styles.inputBox}>
         <TextInput
           style={styles.input}
-          onChangeText={(t) => {
-            if (t === "") {
+          onChangeText={t => {
+            if (t === '') {
               setPage!(false);
             }
             setText(t);
@@ -48,7 +47,7 @@ export default () => {
               // console.log(temp);
               searchHistory?.setValue(temp);
             } else {
-              console.log("setQuery 或 setPage 未定义");
+              console.log('setQuery 或 setPage 未定义');
             }
           }}
           value={text}
@@ -66,22 +65,22 @@ const styles = StyleSheet.create({
   header: {
     height: 60,
     backgroundColor: dv.themeColor,
-    alignItems: "center",
-    flexDirection: "row",
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   inputBox: {
-    borderColor: "white",
+    borderColor: 'white',
     borderBottomWidth: 1,
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   delBtn: {},
   input: {
     // margin:0,
     fontSize: 16,
     padding: 2,
-    color: "gray",
+    color: 'white',
     flex: 1,
   },
 });

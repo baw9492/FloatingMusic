@@ -1,11 +1,12 @@
-import React from "react";
-import { View, StyleSheet, Text, Pressable, StatusBar } from "react-native";
-import binliang from "../styles/dv";
-import { useNavigation } from "@react-navigation/native";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import SelfScreen from "./home/SelfScreen";
-import TuiJianScreen from "./home/TuiJianScreen";
-import dv from "../styles/dv";
+import React, {useEffect, useState} from 'react';
+import {View, StyleSheet, Text, Pressable, StatusBar} from 'react-native';
+import binliang from '../styles/dv';
+import {useNavigation} from '@react-navigation/native';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import SelfScreen from './home/SelfScreen';
+import TuiJianScreen from './home/TuiJianScreen';
+import dv from '../styles/dv';
+import {trpc} from '../lib/trpc';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -23,7 +24,16 @@ export default function HomeScreen() {
 }
 
 const VideoScreen = () => {
-  return <Text>视频页</Text>;
+  const [data, sd] = useState('');
+  useEffect(() => {
+    trpc.getData.query().then(sd);
+  }, []);
+
+  return (
+    <View className="bg-red-500">
+      <Text>{data}</Text>
+    </View>
+  );
 };
 
 function MyTabBar() {
@@ -46,7 +56,7 @@ function MyTabBar() {
       </View>
       <Pressable>
         {/* @ts-ignore */}
-        <Text style={styles.gico} onPress={() => navigation.navigate("search")}>
+        <Text style={styles.gico} onPress={() => navigation.navigate('search')}>
           search
         </Text>
       </Pressable>
@@ -58,20 +68,20 @@ const styles = StyleSheet.create({
   header: {
     height: 60,
     backgroundColor: binliang.themeColor,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 12,
   },
 
   gico: {
-    fontFamily: "gicon",
+    fontFamily: 'gicon',
     fontSize: 28,
   },
   tabGroup: {
-    display: "flex",
-    flexDirection: "row",
+    display: 'flex',
+    flexDirection: 'row',
   },
   tabBtn: {
     marginHorizontal: 10,

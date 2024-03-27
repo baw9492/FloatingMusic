@@ -1,24 +1,15 @@
-import React, {startTransition, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import FuncWrap from '../../components/FuncWrap';
-import SongSheetLink from '../../components/SongSheetLink';
-import StateCtx from '../../fn/StateCtx';
-import {Button, Text, TextInput, View, Modal} from 'react-native';
+import {Button, Text, TextInput, View, Modal, Pressable} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SongListLink from '../../components/SongListLink';
+import LocalSheet from '../../components/self/LocalSheet';
+import {useLocalSheet} from '../../lib/states/localsheet';
 
 export default () => {
   const [show, setShow] = useState(false);
   const [newl, setnewl] = useState('');
-  const [ll, setll] = useState<songlistdata[]>([]);
-
-  useEffect(() => {
-    (async () => {
-      const value = await AsyncStorage.getItem('locallist');
-      if (value) {
-        setll(JSON.parse(value));
-      }
-    })();
-  }, []);
+  const {value, setValue} = useLocalSheet()!;
 
   const createNewSheet = async () => {
     setShow(false);
@@ -35,48 +26,52 @@ export default () => {
       );
     }
     setnewl('');
-    setll(oldll => [...Array.from(oldll), newData]);
   };
 
   return (
     <>
-      <FuncWrap />
-      <Button
-        title="创建歌单"
-        onPress={() => {
-          setShow(true);
-        }}
-      />
-      {show && (
-        <Modal animationType="slide" transparent={true}>
-          <View
-            style={{
-              flex: 1,
-              // backgroundColor: 'gray',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <View style={{width: 300, height: 300, backgroundColor: 'gray'}}>
-              <TextInput
-                placeholder="歌单名称"
-                value={newl}
-                onChangeText={setnewl}
-              />
-              <Button title="确认" onPress={createNewSheet} />
+      {/* <FuncWrap /> */}
+      <View className="flex-row justify-end">
+        <Button
+          title="创建歌单"
+          onPress={() => {
+            setShow(true);
+          }}
+        />
+        {show && (
+          <Modal animationType="slide" transparent={true}>
+            <View
+              style={{
+                flex: 1,
+                // backgroundColor: 'gray',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <View className="border border-black w-[80%] justify-between">
+                <TextInput
+                  className="mx-4 pb-1 border-b border-black"
+                  placeholder="歌单名称"
+                  value={newl}
+                  onChangeText={setnewl}
+                />
+                <View className="p-2 w-[100%] flex-row">
+                  <Pressable
+                    onPress={() => {}}
+                    className="flex-1 bg-red-400 h-8 justify-center items-center">
+                    <Text className="text-white">取消</Text>
+                  </Pressable>
+                  <Pressable
+                    onPress={createNewSheet}
+                    className="flex-1 bg-blue-400 justify-center items-center">
+                    <Text className="text-white">确定</Text>
+                  </Pressable>
+                </View>
+              </View>
             </View>
-          </View>
-        </Modal>
-      )}
-      {ll.map((v, i) => {
-        return <SongListLink data={v} key={i} />;
-      })}
-      <Button
-        title="drop"
-        onPress={async () => {
-          AsyncStorage.removeItem('locallist');
-          setll([]);
-        }}
-      />
+          </Modal>
+        )}
+      </View>
+      <LocalSheet dataArr={value} />
     </>
   );
 };

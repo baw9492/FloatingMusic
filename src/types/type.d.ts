@@ -5,7 +5,7 @@ interface songdata {
   artist?: string[];
   album?: string;
   from?: string;
-  src?: string|null;
+  src?: string | null;
   pay_play: boolean;
 }
 
@@ -46,4 +46,9 @@ type TrackState = {
 interface StateCtx<T> {
   value: T;
   setValue: React.Dispatch<React.SetStateAction<T>>;
+}
+
+enum SearchType {
+  Song,
+  SongList,
 }
