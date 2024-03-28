@@ -37,9 +37,10 @@ export async function findSong(keyWord: string, type: SearchType) {
 export async function getSongsByIds(Ids: string[]) {
   const objectIds = Ids.map(v => new ObjectId(v));
   const cur = songs.find({_id: {$in: objectIds}});
-  const res = [];
+  const res = new Array(objectIds.length);
   for await (const item of cur) {
-    res.push(item);
+    // res.push(item);
+    res[objectIds.indexOf(item._id)] = item;
   }
   return res;
 }
