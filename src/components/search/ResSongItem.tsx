@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Modal, Pressable, StyleSheet, Text, View} from 'react-native';
 import ds from '../../../ds';
 import TrackPlayer from 'react-native-track-player';
-import getToLocalSheet from '../../lib/addToLocalSheet';
+import {getToLocalSheet} from '../../lib/handleLocalSheet';
 
 export default function SongItem({value}: {value: any}) {
   const artists = value.artist?.join();

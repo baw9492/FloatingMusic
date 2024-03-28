@@ -51,5 +51,5 @@ function timeformat(stime: number) {
   return `${Math.floor(Math.round(stime) / 60) < 10 ? 0 : ""}${Math.floor(
     Math.round(stime) / 60
   )}:${Math.round(stime) % 60 < 10 ? 0 : ""}${Math.round(stime) % 60}`;
-  // 还不如用加号呢
+  // 还不如用加号呢😅
 }

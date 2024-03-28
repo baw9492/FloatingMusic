@@ -39,7 +39,6 @@ export async function getSongsByIds(Ids: string[]) {
   const cur = songs.find({_id: {$in: objectIds}});
   const res = new Array(objectIds.length);
   for await (const item of cur) {
-    // res.push(item);
     res[objectIds.indexOf(item._id)] = item;
   }
   return res;
